@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Button sendbtn1,sendbtn2;
     int smspermid=0;
     String recphn,txtmsg;
+    TextView encrypttv;
+    CryptoUtil cryptoUtil=new CryptoUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,19 @@ public class MainActivity extends AppCompatActivity {
         msget=findViewById(R.id.msget);
         sendbtn1=findViewById(R.id.sendbtn1);
         sendbtn2=findViewById(R.id.sendbtn2);
+        encrypttv=findViewById(R.id.encrypttv);
 
         sendbtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recphn=recet.getText().toString();
                 txtmsg=msget.getText().toString();
+                try {
+                    txtmsg=cryptoUtil.encrypt(txtmsg);
+                    encrypttv.setText(txtmsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 msget.clearFocus();
                 checkPermission(Manifest.permission.SEND_SMS,smspermid);
             }
@@ -50,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 recphn=recet.getText().toString();
                 txtmsg=msget.getText().toString();
+                try {
+                    txtmsg=cryptoUtil.encrypt(txtmsg);
+                    encrypttv.setText(txtmsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 msget.clearFocus();
                 sendSmsFunc2();
             }
